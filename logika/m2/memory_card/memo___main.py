@@ -8,7 +8,7 @@ from memo___edit_layout import *
 from memo___data import *
 
 main_width, main_height = 1000, 450  # початкові розміри головного вікна
-card_width, card_height = 600, 500  # початкові розміри вікна "картка"
+card_width, card_height = 1680, 1050  # початкові розміри вікна "картка"
 time_unit = 60000
 
 
@@ -23,6 +23,37 @@ timer = QTimer()
 win_main = QWidget()
 win_card = QWidget()
 
+win_main.setStyleSheet('''
+                       background-color: black;
+                       color: white;
+                       border: 1px solid green;
+                       font-size: 13px;
+                       ''')
+win_card.setStyleSheet('''
+                       background-color: black;
+                       color: white;
+                       border: 1px solid green;
+                       font-size: 13px;
+                       ''')
+btn_add.setStyleSheet('''
+                       background-color: green;
+                       color: white;
+                       border: 1px solid green;
+                       font-size: 13px;
+                       ''')
+btn_delete.setStyleSheet('''
+                       background-color: red;
+                       color: white;
+                       border: 1px solid red;
+                       font-size: 13px;
+                       ''')
+btn_menu.setStyleSheet('''
+                       background-color: black;
+                       color: white;
+                       border: 1px solid green;
+                       font-size: 13px;
+                       ''')
+lb_results.setStyleSheet('margin: 10px')
 
 # Тестові данні
 def testlist():
@@ -35,7 +66,7 @@ def testlist():
     questions_listmodel.form_list.append(frm)
     frm = Question('Винахід - це', 'щось нове(корисний у господарській діяльності пристрій, який можна використати на практиці.', 'забута річ', 'щось нове(корисний у господарській діяльності пристрій, який НЕ можна використати на практиці.', '')
     questions_listmodel.form_list.append(frm)
-    frm = Question('На полу ліфта стоїть валіза масою 12 кг. Виберіть правильне твердження.', 'Якщо ліфт рушає з нижнього поверху, сила реакції підлоги більша ніж 120 Н.', 'Якщо ліфт нерухомий, сила реакції підлоги більша ніж 120 Н.', 'Чим більше прискорення руху ліфта, тим більша сила тяжіння діє на валізу.', 'Якщо ліфт рушає з верхнього поверху, сила реакції підлоги більша ніж 120 Н.')
+    frm = Question('На полу ліфта стоїть валіза масою 12 кг.\n Виберіть правильне твердження.', 'Якщо ліфт рушає з нижнього поверху, сила реакції підлоги більша ніж 120 Н.', 'Якщо ліфт нерухомий, сила реакції підлоги більша ніж 120 Н.', 'Чим більше прискорення руху ліфта, тим більша сила тяжіння діє на валізу.', 'Якщо ліфт рушає з верхнього поверху, сила реакції підлоги більша ніж 120 Н.')
     questions_listmodel.form_list.append(frm)
     frm = Question('Чи правда, що дріб 1/3 = 1, (3) ?', 'ні', 'так', 'частково', 'незнаю')
     questions_listmodel.form_list.append(frm)
@@ -55,7 +86,7 @@ def testlist():
 def set_card():
     ''' задає, який вигляд має вікно картки'''
     win_card.resize(card_width, card_height)
-    win_card.move(300, 300)
+    win_card.move(0, 0)
     win_card.setWindowTitle('Memory Card')
     win_card.setLayout(Layout_card)
 
