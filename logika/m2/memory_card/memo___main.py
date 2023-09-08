@@ -27,14 +27,27 @@ win_card = QWidget()
 # Тестові данні
 def testlist():
 
-    frm = Question('Яблуко', 'apple', 'application', 'pinapple', 'apply')
+    frm = Question('2+2*2', '6', '4', '8', '10')
     questions_listmodel.form_list.append(frm)
-    frm = Question('Дім', 'house', 'horse', 'hurry', 'hour')
+    frm = Question('1+1', '2', '3', '4', 'да')
     questions_listmodel.form_list.append(frm)
-    frm = Question('Мишка', 'mouse', 'mouth', 'muse', 'museum')
+    frm = Question('Якщо безпосередньо вивчити об’єкт (явище) з деяких причин не можливо, застосовують метод -', 'моделювання', 'порівнювання', 'спостереження', 'демонстрації')
     questions_listmodel.form_list.append(frm)
-    frm = Question('Число', 'number', 'digit', 'amount', 'summary')
+    frm = Question('Винахід - це', 'щось нове(корисний у господарській діяльності пристрій, який можна використати на практиці.', 'забута річ', 'щось нове(корисний у господарській діяльності пристрій, який НЕ можна використати на практиці.', '')
     questions_listmodel.form_list.append(frm)
+    frm = Question('На полу ліфта стоїть валіза масою 12 кг. Виберіть правильне твердження.', 'Якщо ліфт рушає з нижнього поверху, сила реакції підлоги більша ніж 120 Н.', 'Якщо ліфт нерухомий, сила реакції підлоги більша ніж 120 Н.', 'Чим більше прискорення руху ліфта, тим більша сила тяжіння діє на валізу.', 'Якщо ліфт рушає з верхнього поверху, сила реакції підлоги більша ніж 120 Н.')
+    questions_listmodel.form_list.append(frm)
+    frm = Question('Чи правда, що дріб 1/3 = 1, (3) ?', 'ні', 'так', 'частково', 'незнаю')
+    questions_listmodel.form_list.append(frm)
+    frm = Question('Який із кутів є прямим?', 'кут 90 градусів', 'кут 30 градусів', 'кут 173 градуси', 'кут 180 градусів')
+    questions_listmodel.form_list.append(frm)
+    frm = Question('Столицею якої країни є Джакарта?', 'Індонезія', 'Східний Тімор', 'Сінгапур', 'Малайзія')
+    questions_listmodel.form_list.append(frm)
+    frm = Question('Столицею якої країни є Ліма?', 'Перу', 'Гаяна', 'Колумбія', 'Еквадор')
+    questions_listmodel.form_list.append(frm)
+    frm = Question('Які складові частини повного імені файла?', 'шлях до файла + ім`я файла', 'шлях до файла + тип файла', 'список + ім`я файла', 'адреса + розширення')
+    questions_listmodel.form_list.append(frm)
+
 
 # Функції для проведення тесту
 
