@@ -6,7 +6,7 @@ class Student():
 
 students = []
 
-with open ('student_small.txt', 'r', encoding='utf-8') as file:
+with open ('students_large.txt', 'r', encoding='utf-8') as file:
     for line in file:
         data = line.split(' ')
         obj = Student(data[0], data[1], int(data[2]))
