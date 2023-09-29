@@ -6,6 +6,11 @@ from PyQt5.QtWidgets import (
     QGroupBox, QButtonGroup, QRadioButton, QSpinBox)
 import json
 
+
+def writeToFile():
+    with open('notes.json', 'w', encoding='utf8')as file:
+        json.dump(notes, file, ensure_ascii=False, sort_keys=True, indent=4)
+
 app = QApplication([])
 window =QWidget()
 
@@ -68,7 +73,42 @@ def show_notes():
     key = lst_notes.selectedItems()[0].text()
     filed_text.setText(notes[key]['текст'])
 
+    lst_teg.clear()
+    lst_teg.addItems(notes[key]['теги'])
 
+
+def add_note():
+    note_name , ok = QInputDialog.getText(window,'Додати замітку', 'Назва замітки')
+    if note_name and ok:
+        lst_notes.addItem(note_name)
+        notes[note_name] = {"текст": "","теги": []}
+
+
+
+    writeToFile()
+
+def del_note():
+    if lst_notes.currentItem():    
+        key = lst_notes.currentItem().text()
+        del notes[key]
+        writeToFile()
+        filed_teg.clear()
+        lst_teg.clear()
+        lst_notes.clear()
+        lst_notes.addItems(notes)
+
+def save_notes():
+    if lst_notes.currentItem():
+        key = lst_notes.currentItem().text()
+
+        notes[key]['текст']  = filed_text.toPlainText()
+        writeToFile()
+
+btn_note_save.clicked.connect(save_notes)
+
+btn_note_del.clicked.connect(del_note)
+
+btn_note_create.clicked.connect(add_note)
 
 lst_notes.itemClicked.connect(show_notes)
 
