@@ -61,6 +61,8 @@ col2.addWidget(lb_teg)
 
 col2.addWidget(lst_teg)
 
+col2.addWidget(filed_teg)
+
 col2.addLayout(row2)
 
 row2.addWidget(btn_teg_add)
@@ -104,6 +106,54 @@ def save_notes():
         notes[key]['текст']  = filed_text.toPlainText()
         writeToFile()
 
+
+def add_teg():
+    if lst_notes.currentItem():
+        key = lst_notes.currentItem().text()
+        teg = filed_teg.text()
+        notes[key]['теги'].append(teg)
+
+        lst_teg.addItem(teg)
+        writeToFile()
+
+def del_teg():
+    key = lst_notes.currentItem().text()
+    teg = lst_teg.currentItem().text()
+        
+    notes[key]['теги'].remove(teg)
+    
+    lst_teg.clear()
+    lst_teg.addItems(notes[key]['теги'])
+    
+    writeToFile()
+
+def search_teg():
+    teg = filed_teg.text()
+
+    if 'Шукати тег' == btn_teg_screach.text():
+        filtered_notes= {}
+
+        for key in notes:
+            if teg in notes[key]['теги']:
+                filtered_notes[key] = notes[key]
+        
+        btn_teg_screach.setText('Скинути пошук')
+
+        lst_notes.clear()
+        lst_notes.addItems(filtered_notes)
+        lst_teg.clear()
+        filed_text.clear()
+
+    elif 'Скинути пошук' == btn_teg_screach.text():
+        btn_teg_screach.setText('Шукати тег')
+
+        lst_notes.clear()
+        lst_notes.addItems(notes)
+        lst_teg.clear()
+        filed_text.clear()
+        filed_teg.clear()
+
+
 btn_note_save.clicked.connect(save_notes)
 
 btn_note_del.clicked.connect(del_note)
@@ -113,6 +163,9 @@ btn_note_create.clicked.connect(add_note)
 lst_notes.itemClicked.connect(show_notes)
 
 
+btn_teg_add.clicked.connect(add_teg)
+btn_teg_unPin.clicked.connect(del_teg)
+btn_teg_screach.clicked.connect(search_teg)
 
 with open('notes.json', 'r', encoding='utf8') as file:
     notes = json.load(file)
