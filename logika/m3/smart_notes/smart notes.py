@@ -35,12 +35,15 @@ btn_teg_add =QPushButton('Додати тег тег')
 btn_teg_unPin =QPushButton('Відкріпити тег')
 btn_teg_screach =QPushButton('Шукати тег')
 
+btn_screach_name=QPushButton('Пошук по імені')
+
+
 
 layout_notes=QHBoxLayout()
 col1= QVBoxLayout()
 col2= QVBoxLayout()
 
-layout_notes.addLayout(col1,stretch=2)
+layout_notes.addLayout(col1,stretch=3)
 layout_notes.addLayout(col2,stretch=1)
 
 row1= QHBoxLayout()
@@ -69,6 +72,8 @@ row2.addWidget(btn_teg_add)
 row2.addWidget(btn_teg_unPin)
 
 col2.addWidget(btn_teg_screach)
+
+
 
 
 def show_notes():
@@ -154,6 +159,7 @@ def search_teg():
         filed_teg.clear()
 
 
+
 btn_note_save.clicked.connect(save_notes)
 
 btn_note_del.clicked.connect(del_note)
@@ -166,6 +172,7 @@ lst_notes.itemClicked.connect(show_notes)
 btn_teg_add.clicked.connect(add_teg)
 btn_teg_unPin.clicked.connect(del_teg)
 btn_teg_screach.clicked.connect(search_teg)
+
 
 with open('notes.json', 'r', encoding='utf8') as file:
     notes = json.load(file)
