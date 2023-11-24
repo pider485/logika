@@ -19,19 +19,43 @@ class GameSprite(sprite.Sprite):
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
 
+class Player(GameSprite):
+    def update(self):
+        keys = key.get_pressed()
+        if keys[K_UP] and self.rect.y > 5:
+            self.rect.y -= self.speed
+        if keys[K_DOWN] and self.rect.y < win_height-70:
+            self.rect.y += self.speed
+        if keys[K_LEFT] and self.rect.x > 5:
+            self.rect.x -= self.speed
+        if keys[K_RIGHT] and self.rect.x < win_width - 70: 
+            self.rect.x += self.speed
 
-
+class Enemy(GameSprite):
+    direction = 'left'
+    def update(self):
+        if self.direction == 'left':
+            self.rect.x -= self.speed
+        else:
+            self.rect.x += self.speed    
+            
+        if self.rect.x <= 450:
+            self.direction = 'right'
+        if self.rect.x >= win_width - 80:
+            self.direction = 'left'
+        
 win_width = 700
 win_height = 500
 
 window = display.set_mode((win_width, win_height))
 background = transform.scale(image.load("background.jpg"), (win_width, win_height))
 
-player = GameSprite('hero.png', 5, win_height - 80, 4)
-cyborg = GameSprite('cyborg.png', win_width - 150, win_height - 250, 4)
-
+player = Player('hero.png', 5, win_height - 80, 4)
+cyborg = Enemy('cyborg.png', win_width - 150, win_height - 250, 4)
+final = GameSprite('treasure.png', win_width - 80, win_height-80, 0)
 
 game = True
+finish = False
 clock = time.Clock()
 FPS = 144
 
@@ -44,13 +68,15 @@ while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
-            
-    window.blit(background,(0,0))
-    player.reset()
-    cyborg.reset()
-    
-            
-            
-            
+    if not finish:        
+        window.blit(background,(0,0))
+        player.reset()
+        cyborg.reset()
+        final.reset()
+        
+        player.update()        
+        cyborg.update()        
+        
+                
     display.update()
     clock.tick(FPS)
