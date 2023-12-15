@@ -5,6 +5,8 @@ from pygame.transform import scale, flip
 from pygame.image import load
 from random import randint
 
+lost = 0
+score = 0
 
 
 class GameSprite(sprite.Sprite):
@@ -34,9 +36,24 @@ class Player(GameSprite):
     def fire(self):
         pass
 
+class Enemy(GameSprite):
+    def update(self):
+        self.rect.y += self.speed
+        global lost
+        if self.rect.y>win_height:
+            self.rect.y=0
+            self.rect.x=randint(0,win_width-100)
+            lost += 1
+
 
 win_width = 700
 win_height= 500
+
+monsters = sprite.Group()
+for i in range(5):
+    en = Enemy('ufo.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
+    monsters.add(en)
+
 
 window = display.set_mode((win_width, win_height))
 background = scale(load('galaxy.jpg'), (win_width, win_height))
@@ -53,8 +70,13 @@ FPS = 60
 mixer.init()
 mixer.music.load('space.ogg')
 mixer.music.play(-1)
-mixer.music.set_volume(0.75)
+mixer.music.set_volume(0.10)
 
+font.init()
+font1 = font.SysFont('Arial', 36)
+
+txt_lose = font1.render(f'Пропущено: {lost}', True,(255,255,255))
+txt_score =font1.render(f'Бали: {score}', True,(255,255,255))
 while game:
     for e in event.get():
         if e.type == QUIT:
@@ -62,8 +84,14 @@ while game:
     
     if not finish:
         window.blit(background, (0, 0))
+        txt_lose = font1.render(f'Пропущено: {lost}', True,(255,255,255))
+        txt_score =font1.render(f'Бали: {score}', True,(255,255,255))
+        window.blit(txt_lose, (10, 50))
+        window.blit(txt_score, (10, 100))
         ship.reset()
         ship.update()
-    
+        monsters.draw(window)
+        monsters.update()
+
     display.update()
     clock.tick(FPS)
