@@ -55,9 +55,15 @@ win_width = 700
 win_height= 500
 bullets = sprite.Group()
 monsters = sprite.Group()
+commet = sprite.Group()
+
 for i in range(5):
     en = Enemy('ufo.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
     monsters.add(en)
+
+for i in range(2):
+    en = Enemy('asteroid.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
+    commet.add(en)
 
 
 window = display.set_mode((win_width, win_height))
@@ -79,6 +85,10 @@ mixer.music.set_volume(0.10)
 
 font.init()
 font1 = font.SysFont('Arial', 36)
+font2 = font.SysFont('Arial', 80)
+
+txt_lose_game= font2.render('YOU LOSE!', True,(255,0,0))
+txt_win_game= font2.render('YOU WIN!', True,(0,0,255))
 
 txt_lose = font1.render(f'Пропущено: {lost}', True,(255,255,255))
 txt_score =font1.render(f'Бали: {score}', True,(255,255,255))
@@ -101,7 +111,51 @@ while game:
         monsters.draw(window)
         monsters.update()
 
+        commet.draw(window)
+        commet.update()
+        
+        
         bullets.draw(window)
         bullets.update()
+        
+        if sprite.spritecollide(ship,commet,False):
+            finish= True
+            window.blit(txt_lose_game, (200,200))
+        
+        if sprite.spritecollide(ship,monsters,False):
+            finish= True
+            window.blit(txt_lose_game, (200,200))
+
+        collide = sprite.groupcollide(monsters,bullets,True,True)
+        for c in collide:
+            en = Enemy('ufo.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
+            monsters.add(en)
+            score+=1
+        if score == 10:
+            finish = True
+            window.blit(txt_win_game, (200,200))
+    else:
+        score = 0
+        lost = 0
+        finish =False
+        
+        for m in monsters:
+            m.kill()
+        
+        for m in bullets:
+            m.kill
+        
+        for m in commet:
+            m.kill()
+        
+        time.delay(3000)
+
+        for i in range(5):
+            en = Enemy('ufo.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
+            monsters.add(en)
+        for i in range(2):
+            en = Enemy('asteroid.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
+            commet.add(en)
+        
     display.update()
     clock.tick(FPS)
