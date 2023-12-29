@@ -34,8 +34,8 @@ class Player(GameSprite):
             self.rect.x += self.speed
 
     def fire(self):
-        pass
-
+        bullet=Bullet('bullet.png', self.rect.centerx-7,self.rect.top , 15, 20,15)
+        bullets.add(bullet)
 class Enemy(GameSprite):
     def update(self):
         self.rect.y += self.speed
@@ -45,10 +45,15 @@ class Enemy(GameSprite):
             self.rect.x=randint(0,win_width-100)
             lost += 1
 
+class Bullet(GameSprite):
+    def update(self):
+        self.rect.y-=self.speed
+        if self.rect.y < -5:
+            self.kill()
 
 win_width = 700
 win_height= 500
-
+bullets = sprite.Group()
 monsters = sprite.Group()
 for i in range(5):
     en = Enemy('ufo.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
@@ -81,6 +86,9 @@ while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
+        if e.type == KEYDOWN:
+            if e.key == K_x:
+                ship.fire()
     
     if not finish:
         window.blit(background, (0, 0))
@@ -93,5 +101,7 @@ while game:
         monsters.draw(window)
         monsters.update()
 
+        bullets.draw(window)
+        bullets.update()
     display.update()
     clock.tick(FPS)
