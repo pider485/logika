@@ -214,7 +214,6 @@ while game:
                 hp -=1
         if ammo ==0:
             reload_ammo+=1
-            print(reload_ammo)
             if reload_ammo == 80:
                 ammo = max_ammo
                 reload_ammo =0
