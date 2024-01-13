@@ -160,7 +160,7 @@ while game:
                     ult=0
                     for m in monsters:
                         m.kill()
-                        score =+1
+                        score +=1
 
                     for m in bullets:
                         m.kill
@@ -182,7 +182,7 @@ while game:
         txt_update1 = font3.render(f'Натисніть л для покупки', True,(255,255,255))
         txt_hp = font3.render(f'Життя : {hp}', True,(255,255,255))
         txt_update_hp = font3.render(f'Збільшити кількість життя 2б', True,(255,255,255))
-        txt_hp_buy = font4.render(f'Натисніть О', True,(255,255,255))
+        txt_hp_buy = font3.render(f'Натисніть О', True,(255,255,255))
         window.blit(txt_lose, (10, 50))
         window.blit(txt_score, (10, 100))
         window.blit(txt_ammo,(500,50))
