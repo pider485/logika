@@ -101,16 +101,21 @@ mixer.music.set_volume(0.10)
 font.init()
 font1 = font.SysFont('Arial', 36)
 font2 = font.SysFont('Arial', 80)
+font3 = font.SysFont('Arial', 15)
 
 txt_lose_game= font2.render('YOU LOSE!', True,(255,0,0))
 txt_win_game= font2.render('YOU WIN!', True,(0,0,255))
 
 txt_lose = font1.render(f'Пропущено: {lost}', True,(255,255,255))
 txt_score =font1.render(f'Бали: {score}', True,(255,255,255))
-
-
+max_ammo=5
 ammo = 5
 reload_ammo = 0
+
+txt_ammo = font1.render(f'Патрони: {ammo}', True,(255,255,255))
+txt_update = font3.render(f'збільшити кількість боєприпасів 5 б', True,(255,255,255))
+txt_update1 = font3.render(f'Натисніть л для покупки', True,(255,255,255))
+txt_update_hp = font3.render(f'Збільшити кількість життя 2 б', True,(255,255,255))
 
 noclip = False
 nocllip_ind = Wall(5,5,10,10,(0,225,0))
@@ -123,6 +128,12 @@ while game:
                 if ammo != 0:
                     ship.fire()
                     ammo-=1
+            if e.key == K_r:
+                ammo=0
+            if e.key == K_k:
+                if score >= 5:
+                    max_ammo+=1
+                    score -= 5
             if noclip == False:    
                 if e.key == K_n:
                     noclip=True
@@ -135,8 +146,14 @@ while game:
         window.blit(background, (0, 0))
         txt_lose = font1.render(f'Пропущено: {lost}', True,(255,255,255))
         txt_score =font1.render(f'Бали: {score}', True,(255,255,255))
+        txt_ammo = font1.render(f'Патрони: {ammo}', True,(255,255,255))
+        txt_update = font3.render(f'збільшити кількість боєприпасів 5 б', True,(255,255,255))
+        txt_update1 = font3.render(f'Натисніть л для покупки', True,(255,255,255))
         window.blit(txt_lose, (10, 50))
         window.blit(txt_score, (10, 100))
+        window.blit(txt_ammo,(500,50))
+        window.blit(txt_update,(450,100))
+        window.blit(txt_update1,(450,120))
         ship.reset()
         ship.update()
         monsters.draw(window)
@@ -169,10 +186,10 @@ while game:
             reload_ammo+=1
             print(reload_ammo)
             if reload_ammo == 80:
-                ammo =5
+                ammo = max_ammo
                 reload_ammo =0
             
-        if score == 10:
+        if score == 50:
             finish = True
             window.blit(txt_win_game, (200,200))
     else:
