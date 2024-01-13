@@ -71,6 +71,7 @@ win_height= 500
 bullets = sprite.Group()
 monsters = sprite.Group()
 commet = sprite.Group()
+Ship = sprite.Group()
 
 for i in range(5):
     en = Enemy('ufo.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
@@ -85,7 +86,7 @@ window = display.set_mode((win_width, win_height))
 background = scale(load('galaxy.jpg'), (win_width, win_height))
 
 ship = Player('rocket.png', 5, win_height-110, 80, 100, 9)
-
+Ship.add(ship)
 game= True
 finish = False
 
@@ -112,13 +113,19 @@ max_ammo=5
 ammo = 5
 reload_ammo = 0
 
+hp = 3
+
 txt_ammo = font1.render(f'Патрони: {ammo}', True,(255,255,255))
 txt_update = font3.render(f'збільшити кількість боєприпасів 5 б', True,(255,255,255))
 txt_update1 = font3.render(f'Натисніть л для покупки', True,(255,255,255))
 txt_update_hp = font3.render(f'Збільшити кількість життя 2 б', True,(255,255,255))
+txt_hp = font3.render(f'Життя : {hp}', True,(255,255,255))
+txt_hp_buy = font3.render(f'Натисніть О', True,(255,255,255))
 
 noclip = False
 nocllip_ind = Wall(5,5,10,10,(0,225,0))
+
+
 while game:
     for e in event.get():
         if e.type == QUIT:
@@ -134,6 +141,10 @@ while game:
                 if score >= 5:
                     max_ammo+=1
                     score -= 5
+            if e.key == K_j:
+                if score >=2:
+                    hp+=1
+                    score-=2
             if noclip == False:    
                 if e.key == K_n:
                     noclip=True
@@ -149,11 +160,17 @@ while game:
         txt_ammo = font1.render(f'Патрони: {ammo}', True,(255,255,255))
         txt_update = font3.render(f'збільшити кількість боєприпасів 5 б', True,(255,255,255))
         txt_update1 = font3.render(f'Натисніть л для покупки', True,(255,255,255))
+        txt_hp = font3.render(f'Життя : {hp}', True,(255,255,255))
+        txt_update_hp = font3.render(f'Збільшити кількість життя 2б', True,(255,255,255))
+        txt_hp_buy = font3.render(f'Натисніть О', True,(255,255,255))
         window.blit(txt_lose, (10, 50))
         window.blit(txt_score, (10, 100))
         window.blit(txt_ammo,(500,50))
         window.blit(txt_update,(450,100))
         window.blit(txt_update1,(450,120))
+        window.blit(txt_update_hp,(450,140))
+        window.blit(txt_hp_buy,(450,160))
+        window.blit(txt_hp,(450,180))
         ship.reset()
         ship.update()
         monsters.draw(window)
@@ -173,7 +190,7 @@ while game:
                 finish= True
                 window.blit(txt_lose_game, (200,200))
 
-            if sprite.spritecollide(ship,monsters,False):
+            if hp == 0:
                 finish= True
                 window.blit(txt_lose_game, (200,200))
 
@@ -182,6 +199,19 @@ while game:
             en = Enemy('ufo.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
             monsters.add(en)
             score+=1
+        if noclip == False:
+            collide = sprite.groupcollide(monsters,Ship,True,False)
+            for c in collide:
+                en = Enemy('ufo.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
+                monsters.add(en)
+                score+=1
+                hp-=1
+            collide = sprite.groupcollide(commet,Ship,True,False)
+            for c in collide:
+                en = Enemy('asteroid.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
+                commet.add(en)
+                score+=1
+                hp -=1
         if ammo ==0:
             reload_ammo+=1
             print(reload_ammo)
@@ -196,6 +226,7 @@ while game:
         score = 0
         lost = 0
         finish =False
+        hp = 3
         
         for m in monsters:
             m.kill()
