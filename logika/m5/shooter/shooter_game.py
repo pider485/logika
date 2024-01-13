@@ -51,6 +51,21 @@ class Bullet(GameSprite):
         if self.rect.y < -5:
             self.kill()
 
+class Wall(sprite.Sprite):
+    def __init__(self, wall_x, wall_y, wall_width, wall_height,collor):
+        super().__init__()
+        self.width = wall_width
+        self.height = wall_height
+        self.color = color
+        self.image = Surface((self.width, self.height))
+        self.image.fill(collor)
+        
+        self.rect = self.image.get_rect()
+        self.rect.x = wall_x
+        self.rect.y = wall_y
+    def reset(self):
+        window.blit(self.image, (self.rect.x, self.rect.y))
+
 win_width = 700
 win_height= 500
 bullets = sprite.Group()
@@ -92,14 +107,30 @@ txt_win_game= font2.render('YOU WIN!', True,(0,0,255))
 
 txt_lose = font1.render(f'Пропущено: {lost}', True,(255,255,255))
 txt_score =font1.render(f'Бали: {score}', True,(255,255,255))
+
+
+ammo = 5
+reload_ammo = 0
+
+noclip = False
+nocllip_ind = Wall(5,5,10,10,(0,225,0))
 while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
         if e.type == KEYDOWN:
             if e.key == K_x:
-                ship.fire()
-    
+                if ammo != 0:
+                    ship.fire()
+                    ammo-=1
+            if noclip == False:    
+                if e.key == K_n:
+                    noclip=True
+                    nocllip_ind = Wall(5,5,10,10,(225,0,0))
+            if noclip == True:    
+                if e.key == K_m:
+                    nocllip_ind = Wall(5,5,10,10,(0,225,0))
+                    noclip=False
     if not finish:
         window.blit(background, (0, 0))
         txt_lose = font1.render(f'Пропущено: {lost}', True,(255,255,255))
@@ -118,19 +149,29 @@ while game:
         bullets.draw(window)
         bullets.update()
         
-        if sprite.spritecollide(ship,commet,False):
-            finish= True
-            window.blit(txt_lose_game, (200,200))
+        nocllip_ind.reset()
         
-        if sprite.spritecollide(ship,monsters,False):
-            finish= True
-            window.blit(txt_lose_game, (200,200))
+        if noclip == False:
+            if sprite.spritecollide(ship,commet,False):
+                finish= True
+                window.blit(txt_lose_game, (200,200))
+
+            if sprite.spritecollide(ship,monsters,False):
+                finish= True
+                window.blit(txt_lose_game, (200,200))
 
         collide = sprite.groupcollide(monsters,bullets,True,True)
         for c in collide:
             en = Enemy('ufo.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
             monsters.add(en)
             score+=1
+        if ammo ==0:
+            reload_ammo+=1
+            print(reload_ammo)
+            if reload_ammo == 80:
+                ammo =5
+                reload_ammo =0
+            
         if score == 10:
             finish = True
             window.blit(txt_win_game, (200,200))
