@@ -103,6 +103,7 @@ font.init()
 font1 = font.SysFont('Arial', 36)
 font2 = font.SysFont('Arial', 80)
 font3 = font.SysFont('Arial', 15)
+font4 = font.SysFont('Arial', 25)
 
 txt_lose_game= font2.render('YOU LOSE!', True,(255,0,0))
 txt_win_game= font2.render('YOU WIN!', True,(0,0,255))
@@ -121,11 +122,12 @@ txt_update1 = font3.render(f'Натисніть л для покупки', True,
 txt_update_hp = font3.render(f'Збільшити кількість життя 2 б', True,(255,255,255))
 txt_hp = font3.render(f'Життя : {hp}', True,(255,255,255))
 txt_hp_buy = font3.render(f'Натисніть О', True,(255,255,255))
+txt_ult = font4.render(f'СУПЕР УДАР! Я', True,(255,255,255))
 
 noclip = False
 nocllip_ind = Wall(5,5,10,10,(0,225,0))
 
-
+ult =0
 while game:
     for e in event.get():
         if e.type == QUIT:
@@ -153,6 +155,24 @@ while game:
                 if e.key == K_m:
                     nocllip_ind = Wall(5,5,10,10,(0,225,0))
                     noclip=False
+            if e.key == K_z:
+                if ult >=300 :
+                    ult=0
+                    for m in monsters:
+                        m.kill()
+                        score =+1
+
+                    for m in bullets:
+                        m.kill
+
+                    for m in commet:
+                        m.kill()
+                    for i in range(5):
+                        en = Enemy('ufo.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
+                        monsters.add(en)
+                    for i in range(2):
+                        en = Enemy('asteroid.png', randint(0,win_width-100), 0, 100, 80, randint(1,5))
+                        commet.add(en)
     if not finish:
         window.blit(background, (0, 0))
         txt_lose = font1.render(f'Пропущено: {lost}', True,(255,255,255))
@@ -162,7 +182,7 @@ while game:
         txt_update1 = font3.render(f'Натисніть л для покупки', True,(255,255,255))
         txt_hp = font3.render(f'Життя : {hp}', True,(255,255,255))
         txt_update_hp = font3.render(f'Збільшити кількість життя 2б', True,(255,255,255))
-        txt_hp_buy = font3.render(f'Натисніть О', True,(255,255,255))
+        txt_hp_buy = font4.render(f'Натисніть О', True,(255,255,255))
         window.blit(txt_lose, (10, 50))
         window.blit(txt_score, (10, 100))
         window.blit(txt_ammo,(500,50))
@@ -185,6 +205,8 @@ while game:
         
         nocllip_ind.reset()
         
+        if ult >= 300:
+            window.blit(txt_ult,(450,240))
         if noclip == False:
             if sprite.spritecollide(ship,commet,False):
                 finish= True
@@ -221,11 +243,13 @@ while game:
         if score == 50:
             finish = True
             window.blit(txt_win_game, (200,200))
+        ult +=1
     else:
         score = 0
         lost = 0
         finish =False
         hp = 3
+        max_ammo = 5
         
         for m in monsters:
             m.kill()
